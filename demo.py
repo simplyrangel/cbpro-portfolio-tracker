@@ -32,6 +32,12 @@ btc = markets.price_history(
 	)
 btc.to_excel("~/Desktop/btc-prices.xlsx")
 
+# portfolio:
+portfolio_history = myportfolio.daily_history(
+	ledger_file="~/Desktop/ledger.xlsx",
+	)
+portfolio_history.to_excel("~/Desktop/portfolio-coin-history.xlsx")
+
 # get account ledger:
 #ledger = myportfolio.ledger()
 #ledger.to_excel("~/Desktop/ledger.xlsx")

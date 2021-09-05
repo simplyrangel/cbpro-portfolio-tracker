@@ -39,6 +39,35 @@ class portfolio(apiwrapper):
 			)
 		return utils.update_ledger(mdf)
 		
-	def _usd_deposits(self):
-		'''wrap this into get_ledger().'''
-		pass
+	def daily_history(self,ledger=None):
+		if ledger is None:
+			ledger = self.ledger()
+		coins_in_ledger = ledger.index.levels[0].tolist()
+		
+		# create dataframe based on ledger contents:
+		date_range = pd.date_range(
+			start=ledger.index.levels[1].min().date(),
+			end=datetime.datetime.today(),
+			freq="D",
+			tz=None,
+			)
+		mdf = pd.DataFrame(
+			np.nan,
+			index=date_range,
+			columns=coins_in_ledger,
+			)
+		
+		# add each coin's contents and return populated
+		# multiindex dataframe:
+		for coin in coins_in_ledger:
+			df = ledger.loc[idx[coin,:],:]
+			df = df.reset_index().set_index("created_at")
+			df = df.resample("D").last().dropna(how="all")
+			mdf.loc[df.index,coin] = df.balance
+		return mdf.ffill().fillna(0.0)
+
+
+
+
+
+

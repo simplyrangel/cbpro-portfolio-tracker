@@ -90,7 +90,6 @@ class markets(apiwrapper):
 		# iterate over each (start, end) pair:
 		endpoint_template = "/products/{product_id}/candles?{options}"
 		for start, end in index_slices:
-			print(start,end)
 			iso_start = start.strftime("%Y-%m-%dT%H:%M:%SZ")
 			iso_end = end.strftime("%Y-%m-%dT%H:%M:%SZ")
 			query_options = "start=%s&end=%s&granularity=%d"%(
